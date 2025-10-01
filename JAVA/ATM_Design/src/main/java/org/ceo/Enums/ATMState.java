@@ -1,5 +1,6 @@
 package org.ceo.Enums;
 
+// For Representation of Different Types of ATM States
 public enum ATMState {
     READY_FOR_TRANSACTION,
     READ_CARD_DETAILS_AND_PIN,

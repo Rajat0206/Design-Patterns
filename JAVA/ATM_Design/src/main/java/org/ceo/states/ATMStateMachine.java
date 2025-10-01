@@ -7,6 +7,7 @@ public interface ATMStateMachine {
     boolean readCardDetailsAndPin();
     boolean cancelTransaction();
     void ejectCard();
+    boolean readCashWithdrawDetails();
     int dispenseCash();
     ATMState getState();
 }

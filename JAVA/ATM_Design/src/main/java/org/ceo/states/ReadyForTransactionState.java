@@ -4,15 +4,19 @@ import org.ceo.Enums.ATMState;
 import org.ceo.models.ATM;
 
 public class ReadyForTransactionState implements ATMStateMachine {
-    private ATM atm;
+    private final ATM atm;
 
-    public ATM getAtm(ATM atm) {
+    public ReadyForTransactionState(ATM atm) {
         this.atm = atm;
     }
 
     @Override
     public int initTransaction() {
+        //logic to connect to backend and give transaction id
 
+        int transactionId = 1234;
+        this.atm.changeState(new ReadCardAndPinDetailsState(this.atm));
+        return transactionId;
     }
 
     @Override
@@ -28,6 +32,11 @@ public class ReadyForTransactionState implements ATMStateMachine {
     @Override
     public void ejectCard() {
         throw new IllegalStateException("Cannot Eject Card");
+    }
+
+    @Override
+    public boolean readCashWithdrawDetails() {
+        throw new IllegalStateException("Cannot Read Cash Withdraw Details");
     }
 
     @Override
