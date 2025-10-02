@@ -1,9 +1,10 @@
 package org.ceo.states;
 
-import org.ceo.Enums.ATMState;
+import org.ceo.enums.ATMState;
 import org.ceo.models.ATM;
+import org.ceo.models.Card;
 
-public class DispensingCashState implements ATMStateMachine {
+public class DispensingCashState extends ATMStateMachine {
     private final ATM atm;
 
     public DispensingCashState(ATM atm) {
@@ -11,32 +12,7 @@ public class DispensingCashState implements ATMStateMachine {
     }
 
     @Override
-    public int initTransaction() {
-        throw new IllegalStateException("Cannot Init Transaction");
-    }
-
-    @Override
-    public boolean readCardDetailsAndPin() {
-        throw new IllegalStateException("Cannot Read Card");
-    }
-
-    @Override
-    public boolean cancelTransaction() {
-        throw new IllegalStateException("Cannot Cancel Transaction");
-    }
-
-    @Override
-    public void ejectCard() {
-        throw new IllegalStateException("Cannot Eject Card");
-    }
-
-    @Override
-    public boolean readCashWithdrawDetails() {
-        throw new IllegalStateException("Cannot Read Cash Withdraw Details");
-    }
-
-    @Override
-    public int dispenseCash() {
+    public int dispenseCash(Card card, int amount, int transactionId) {
         // logic to do transaction
 
         boolean isTxnSuccessful = true;

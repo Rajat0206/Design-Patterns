@@ -1,6 +1,5 @@
 package org.ceo.models;
 
-import org.ceo.Enums.ATMState;
 import org.ceo.states.ATMStateMachine;
 import org.ceo.states.ReadyForTransactionState;
 
@@ -21,25 +20,25 @@ public class ATM {
         }
     }
 
-    public boolean readCardDetailsAndPin() {
+    public boolean readCardDetailsAndPin(Card card, String pin) {
         try {
-            return atmStateMachine.readCardDetailsAndPin();
+            return atmStateMachine.readCardDetailsAndPin(card, pin);
         } catch (Exception e) {
             throw e;
         }
     }
 
-    public boolean readCashWithdrawDetails() {
+    public boolean readCashWithdrawDetails(Card card, int amount, int transactionId) {
         try {
-            return atmStateMachine.readCashWithdrawDetails();
+            return atmStateMachine.readCashWithdrawDetails(card, amount, transactionId);
         } catch (Exception e) {
             throw e;
         }
     }
 
-    public boolean cancelTransaction() {
+    public boolean cancelTransaction(int transactionId) {
         try {
-            return atmStateMachine.cancelTransaction();
+            return atmStateMachine.cancelTransaction(transactionId);
         } catch (Exception e) {
             throw e;
         }
@@ -53,9 +52,9 @@ public class ATM {
         }
     }
 
-    public int dispenseCash() {
+    public int dispenseCash(Card card, int amount, int transactionId) {
         try {
-            return atmStateMachine.dispenseCash();
+            return atmStateMachine.dispenseCash(card, amount, transactionId);
         } catch (Exception e) {
             throw e;
         }

@@ -1,4 +1,4 @@
-package org.ceo.Enums;
+package org.ceo.enums;
 
 // For Representation of Different Types of ATM States
 public enum ATMState {

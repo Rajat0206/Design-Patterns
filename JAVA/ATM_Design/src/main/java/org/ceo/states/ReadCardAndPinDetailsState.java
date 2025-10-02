@@ -1,9 +1,10 @@
 package org.ceo.states;
 
-import org.ceo.Enums.ATMState;
+import org.ceo.enums.ATMState;
 import org.ceo.models.ATM;
+import org.ceo.models.Card;
 
-public class ReadCardAndPinDetailsState implements ATMStateMachine{
+public class ReadCardAndPinDetailsState extends ATMStateMachine{
     private final ATM atm;
 
     ReadCardAndPinDetailsState(ATM atm) {
@@ -11,12 +12,7 @@ public class ReadCardAndPinDetailsState implements ATMStateMachine{
     }
 
     @Override
-    public int initTransaction() {
-        throw new IllegalStateException("Cannot Init Transaction");
-    }
-
-    @Override
-    public boolean readCardDetailsAndPin() {
+    public boolean readCardDetailsAndPin(Card card, String pin) {
         // logic to check pin and card validation
         boolean isCardValid = true;
 
@@ -30,28 +26,13 @@ public class ReadCardAndPinDetailsState implements ATMStateMachine{
     }
 
     @Override
-    public boolean cancelTransaction() {
+    public boolean cancelTransaction(int transactionId) {
         try {
             this.atm.changeState(new EjectingCardState(this.atm));
             return true;
         } catch (Exception e) {
             throw new IllegalStateException("Cannot Eject Card");
         }
-    }
-
-    @Override
-    public void ejectCard() {
-        throw new IllegalStateException("Cannot Eject Card");
-    }
-
-    @Override
-    public boolean readCashWithdrawDetails() {
-        throw new IllegalStateException("Cannot Read Cash Withdraw Details");
-    }
-
-    @Override
-    public int dispenseCash() {
-        throw new IllegalStateException("Cannot Dispense Cash");
     }
 
     @Override
