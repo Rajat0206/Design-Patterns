@@ -1,22 +1,27 @@
 package org.ceo.states;
 
 import org.ceo.enums.ATMState;
+import org.ceo.factories.CardManagerFactory;
 import org.ceo.models.ATM;
 import org.ceo.models.Card;
+import org.ceo.services.CardManagerService;
+import org.ceo.services.CashDispenserService;
 
 public class DispensingCashState extends ATMStateMachine {
     private final ATM atm;
+    private final CashDispenserService cashDispenserService;
 
-    public DispensingCashState(ATM atm) {
+    public DispensingCashState(ATM atm, CashDispenserService cashDispenserService) {
         this.atm = atm;
+        this.cashDispenserService = cashDispenserService;
     }
 
     @Override
-    public int dispenseCash(Card card, int amount, int transactionId) {
-        // logic to do transaction
-
-        boolean isTxnSuccessful = true;
+    public int dispenseCash(Card card, double amount, int transactionId) {
+        CardManagerService cardManagerService = CardManagerFactory.getCardManager(card.getType());
+        boolean isTxnSuccessful = cardManagerService.doTransaction(card, amount, transactionId);
         if(isTxnSuccessful) {
+            this.cashDispenserService.dispenseCash(this.atm, transactionId, amount);
             System.out.println("Trx Successful");
         } else {
             System.out.println("Something went Wrong");

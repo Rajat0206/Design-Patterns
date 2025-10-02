@@ -17,10 +17,10 @@ public abstract class ATMStateMachine {
     public void ejectCard() {
         throw new IllegalStateException("Cannot Eject Card");
     }
-    public boolean readCashWithdrawDetails(Card card, int amount, int transactionId) {
+    public boolean readCashWithdrawDetails(Card card, double amount, int transactionId) {
         throw new IllegalStateException("Cannot Read Cash Withdraw Details");
     }
-    public int dispenseCash(Card card, int amount, int transactionId) {
+    public int dispenseCash(Card card, double amount, int transactionId) {
         throw new IllegalStateException("Cannot Dispense Cash");
     }
 

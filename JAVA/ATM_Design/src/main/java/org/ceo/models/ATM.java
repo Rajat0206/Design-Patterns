@@ -28,7 +28,7 @@ public class ATM {
         }
     }
 
-    public boolean readCashWithdrawDetails(Card card, int amount, int transactionId) {
+    public boolean readCashWithdrawDetails(Card card, double amount, int transactionId) {
         try {
             return atmStateMachine.readCashWithdrawDetails(card, amount, transactionId);
         } catch (Exception e) {
@@ -52,7 +52,7 @@ public class ATM {
         }
     }
 
-    public int dispenseCash(Card card, int amount, int transactionId) {
+    public int dispenseCash(Card card, double amount, int transactionId) {
         try {
             return atmStateMachine.dispenseCash(card, amount, transactionId);
         } catch (Exception e) {
