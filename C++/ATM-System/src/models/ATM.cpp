@@ -1,12 +1,36 @@
-#include <bits/stdc++.h>
-using namespace std;
-#include <string>
+#include "ATM.h"
+#include "../states/ReadyForTransactionState.h"
 #include "../states/ATMStateMachine.h"
+#include <stdexcept>
 
+ATM::ATM(std::string atmId) : atmId(atmId) {
+    this->atmStateMachine = new ReadyForTransactionState(this);
+}
 
-class ATM{
-    const string atmId;   // equivalent to 'private final String atmId'
-    ATMStateMachine atmStateMachine; //Never instantiate abstract classes directly.Use pointers/references to abstract classes.
+int ATM::initTransaction() {
+    return atmStateMachine->initTransaction();
+}
 
-    //Always implement a concrete subclass that provides the logic for all pure virtual methods.
-};
+bool ATM::readCardDetailsAndPin() {
+    return atmStateMachine->readCardDetailsAndPin();
+}
+
+bool ATM::readCashWithdrawDetails() {
+    return atmStateMachine->readCashWithdrawDetails();
+}
+
+bool ATM::cancelTransaction() {
+    return atmStateMachine->cancelTransaction();
+}
+
+void ATM::ejectCard() {
+    atmStateMachine->ejectCard();
+}
+
+int ATM::dispenseCash() {
+    return atmStateMachine->dispenseCash();
+}
+
+void ATM::changeState(ATMStateMachine* newState) {
+    this->atmStateMachine = newState;
+}

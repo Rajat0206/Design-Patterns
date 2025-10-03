@@ -1,3 +1,4 @@
+#pragma once
 #include "../enums/ATMState.h" 
 
 class ATMStateMachine {
@@ -9,5 +10,6 @@ public:
     virtual bool cancelTransaction() = 0;
     virtual void ejectCard() = 0;
     virtual int dispenseCash() = 0;
+    virtual bool readCashWithdrawDetails()=0;
     virtual ATMState getState() = 0;
 };
