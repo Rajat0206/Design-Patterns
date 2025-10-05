@@ -10,7 +10,7 @@ class DispensingCashState : public ATMStateMachine {
 public:
     explicit DispensingCashState(ATM* atm);
 
-    int dispenseCash() override;
+    int dispenseCash(Card card, double amount, int transactionId) override;
     ATMState getState() override;
 };
 

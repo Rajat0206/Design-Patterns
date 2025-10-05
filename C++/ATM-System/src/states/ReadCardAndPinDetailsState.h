@@ -9,8 +9,8 @@ class ReadCardAndPinDetailsState : public ATMStateMachine {
     ATM* atm;   // pointer to ATM
 public:
     ReadCardAndPinDetailsState(ATM* atm) : atm(atm) {}
-    bool readCardDetailsAndPin() override;
-    bool cancelTransaction() override;
+    bool readCardDetailsAndPin(Card card,std::string pin) override;
+    bool cancelTransaction(int transactioId) override;
     ATMState getState() override;
 };
 

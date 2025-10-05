@@ -7,7 +7,7 @@
 DispensingCashState::DispensingCashState(ATM* atm) : atm(atm) {}
 
 
-int DispensingCashState::dispenseCash() {
+int DispensingCashState::dispenseCash(Card card, double amount, int transactionId) {
     bool isTxnSuccessful = true;  // stubbed backend call
 
     if (isTxnSuccessful) {

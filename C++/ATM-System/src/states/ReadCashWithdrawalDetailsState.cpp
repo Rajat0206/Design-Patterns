@@ -7,7 +7,7 @@
 
 ReadCashWithdrawalDetailsState::ReadCashWithdrawalDetailsState(ATM* atm) : atm(atm) {}
 
-bool ReadCashWithdrawalDetailsState::cancelTransaction() {
+bool ReadCashWithdrawalDetailsState::cancelTransaction(int transactionId) {
     try {
         atm->changeState(new EjectingCardState(atm));
         return true;
@@ -16,7 +16,7 @@ bool ReadCashWithdrawalDetailsState::cancelTransaction() {
     }
 }
 
-bool ReadCashWithdrawalDetailsState::readCashWithdrawDetails() {
+bool ReadCashWithdrawalDetailsState::readCashWithdrawDetails(Card card, double amount, int transactionId) {
     bool isWithdrawValid = true;  // stub logic
 
     if (isWithdrawValid) {

@@ -29,6 +29,7 @@ public:
         return bankName; 
     }
     
+
     CardType getCardType() const { 
         return type; 
     }

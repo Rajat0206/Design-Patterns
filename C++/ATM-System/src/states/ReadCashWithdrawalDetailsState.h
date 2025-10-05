@@ -10,8 +10,8 @@ class ReadCashWithdrawalDetailsState : public ATMStateMachine {
 public:
     explicit ReadCashWithdrawalDetailsState(ATM* atm);
 
-    bool cancelTransaction() override;
-    bool readCashWithdrawDetails() override;
+    bool cancelTransaction(int transactionId) override;
+    bool readCashWithdrawDetails(Card card, double amount, int transactionId) override;
     ATMState getState() override;
 };
 

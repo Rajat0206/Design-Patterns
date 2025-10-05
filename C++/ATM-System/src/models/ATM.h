@@ -6,7 +6,7 @@ using namespace std;
 
 // Forward declaration (to avoid include loop)
 class ATMStateMachine;
-
+// ATM has a states so we have has an relation and we keep instance of every state here if we are not making ATMStateMacchine.
 class ATM {
     string atmId;
     ATMStateMachine* atmStateMachine;

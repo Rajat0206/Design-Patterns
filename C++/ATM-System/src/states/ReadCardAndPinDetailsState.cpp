@@ -4,7 +4,7 @@
 #include "../states/EjectingCardState.h"
 
 
-bool ReadCardAndPinDetailsState::readCardDetailsAndPin() {
+bool ReadCardAndPinDetailsState::readCardDetailsAndPin(Card card,std::string pin) {
     bool isCardValid = true;
 
     if (isCardValid) {
@@ -15,7 +15,7 @@ bool ReadCardAndPinDetailsState::readCardDetailsAndPin() {
     return isCardValid;
 }
 
-bool ReadCardAndPinDetailsState::cancelTransaction() {
+bool ReadCardAndPinDetailsState::cancelTransaction(int transactionId) {
     try {
         atm->changeState(new EjectingCardState(atm));
         return true;
