@@ -6,14 +6,15 @@ import org.ceo.models.ATM;
 import org.ceo.models.Card;
 import org.ceo.services.CardManagerService;
 import org.ceo.services.CashDispenserService;
+import org.ceo.services.CashDispenserServiceImpl;
 
 public class DispensingCashState extends ATMStateMachine {
     private final ATM atm;
     private final CashDispenserService cashDispenserService;
 
-    public DispensingCashState(ATM atm, CashDispenserService cashDispenserService) {
+    public DispensingCashState(ATM atm) {
         this.atm = atm;
-        this.cashDispenserService = cashDispenserService;
+        this.cashDispenserService = new CashDispenserServiceImpl();
     }
 
     @Override

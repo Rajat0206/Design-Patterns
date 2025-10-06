@@ -1,20 +1,26 @@
 package org.ceo.states;
 
+import org.ceo.apis.BackendAPI;
+import org.ceo.apis.NodeBackendAPI;
 import org.ceo.enums.ATMState;
+import org.ceo.factories.CardManagerFactory;
 import org.ceo.models.ATM;
 import org.ceo.models.Card;
+import org.ceo.services.CardManagerService;
 
 public class ReadCardAndPinDetailsState extends ATMStateMachine{
     private final ATM atm;
+    private final BackendAPI backendAPI;
 
     ReadCardAndPinDetailsState(ATM atm) {
         this.atm = atm;
+        this.backendAPI = new NodeBackendAPI();
     }
 
     @Override
     public boolean readCardDetailsAndPin(Card card, String pin) {
-        // logic to check pin and card validation
-        boolean isCardValid = true;
+        CardManagerService cardManagerService = CardManagerFactory.getCardManager(card.getType());
+        boolean isCardValid = cardManagerService.validateCard(card, pin);
 
         if(isCardValid) {
             this.atm.changeState(new ReadCashWithdrawalDetailsState(this.atm));

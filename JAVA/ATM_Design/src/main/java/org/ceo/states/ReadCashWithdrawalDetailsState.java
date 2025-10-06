@@ -1,8 +1,10 @@
 package org.ceo.states;
 
 import org.ceo.enums.ATMState;
+import org.ceo.factories.CardManagerFactory;
 import org.ceo.models.ATM;
 import org.ceo.models.Card;
+import org.ceo.services.CardManagerService;
 
 public class ReadCashWithdrawalDetailsState extends ATMStateMachine {
 
@@ -23,10 +25,10 @@ public class ReadCashWithdrawalDetailsState extends ATMStateMachine {
     }
 
     @Override
-    public boolean readCashWithdrawDetails(Card card, int amount, int transactionId) {
-        // logic to validate
+    public boolean readCashWithdrawDetails(Card card, double amount, int transactionId) {
+        CardManagerService manager = CardManagerFactory.getCardManager(card.getType());
+        boolean isWithdrawValid = manager.validateWithdrawal(transactionId, amount);
 
-        boolean isWithdrawValid = true;
         if(isWithdrawValid) {
             this.atm.changeState(new DispensingCashState(this.atm));
         } else {

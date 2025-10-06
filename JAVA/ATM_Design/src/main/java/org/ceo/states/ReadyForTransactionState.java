@@ -1,20 +1,26 @@
 package org.ceo.states;
 
+import org.ceo.apis.BackendAPI;
+import org.ceo.apis.NodeBackendAPI;
 import org.ceo.enums.ATMState;
 import org.ceo.models.ATM;
 
 public class ReadyForTransactionState extends ATMStateMachine {
     private final ATM atm;
-
+    private final BackendAPI backendAPI;
     public ReadyForTransactionState(ATM atm) {
         this.atm = atm;
+        this.backendAPI = new NodeBackendAPI();
     }
 
     @Override
     public int initTransaction() {
-        //logic to connect to backend and give transaction id
+        int transactionId = this.backendAPI.createTransaction();
 
-        int transactionId = 1234;
+        if(transactionId == 0) {
+            throw new RuntimeException("Transaction could not be created");
+        }
+
         this.atm.changeState(new ReadCardAndPinDetailsState(this.atm));
         return transactionId;
     }
