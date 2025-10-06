@@ -2,6 +2,7 @@ package org.ceo.states;
 
 import org.ceo.enums.ATMState;
 import org.ceo.factories.CardManagerFactory;
+import org.ceo.factories.StateFactory;
 import org.ceo.models.ATM;
 import org.ceo.models.Card;
 import org.ceo.services.CardManagerService;
@@ -19,7 +20,7 @@ public class DispensingCashState extends ATMStateMachine {
 
     @Override
     public int dispenseCash(Card card, double amount, int transactionId) {
-        CardManagerService cardManagerService = CardManagerFactory.getCardManager(card.getType());
+        CardManagerService cardManagerService = CardManagerFactory.getCardManager(card.getNetworkType(), card.getCardType());
         boolean isTxnSuccessful = cardManagerService.doTransaction(card, amount, transactionId);
         if(isTxnSuccessful) {
             this.cashDispenserService.dispenseCash(this.atm, transactionId, amount);
@@ -28,7 +29,7 @@ public class DispensingCashState extends ATMStateMachine {
             System.out.println("Something went Wrong");
         }
 
-        this.atm.changeState(new EjectingCardState(this.atm));
+        this.atm.changeState(StateFactory.getState(ATMState.EJECTING_CARD, this.atm));
         return 0;
     }
 

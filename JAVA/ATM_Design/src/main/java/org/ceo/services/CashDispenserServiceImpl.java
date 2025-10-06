@@ -1,19 +1,19 @@
 package org.ceo.services;
 
-import org.ceo.apis.BackendAPI;
-import org.ceo.apis.NodeBackendAPI;
+import org.ceo.apis.ATMBackendAPI;
+import org.ceo.apis.NodeATMBackendAPI;
 import org.ceo.models.ATM;
 
 public class CashDispenserServiceImpl implements CashDispenserService {
-    private final BackendAPI backendAPI;
+    private final ATMBackendAPI ATMBackendAPI;
 
     public CashDispenserServiceImpl() {
-        this.backendAPI = new NodeBackendAPI();
+        this.ATMBackendAPI = new NodeATMBackendAPI();
     }
 
     @Override
     public void dispenseCash(ATM atm, int transactionId, double amount) {
-        double atmAmount = this.backendAPI.getATMAmount(atm.getAtmId());
+        double atmAmount = this.ATMBackendAPI.getATMAmount(atm.getAtmId());
 
         if(atmAmount < amount) {
             System.out.println("Insufficient Amount in ATM");

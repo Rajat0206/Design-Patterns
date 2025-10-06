@@ -1,31 +1,32 @@
 package org.ceo.states;
 
-import org.ceo.apis.BackendAPI;
-import org.ceo.apis.NodeBackendAPI;
+import org.ceo.apis.ATMBackendAPI;
+import org.ceo.apis.NodeATMBackendAPI;
 import org.ceo.enums.ATMState;
 import org.ceo.factories.CardManagerFactory;
+import org.ceo.factories.StateFactory;
 import org.ceo.models.ATM;
 import org.ceo.models.Card;
 import org.ceo.services.CardManagerService;
 
 public class ReadCardAndPinDetailsState extends ATMStateMachine{
     private final ATM atm;
-    private final BackendAPI backendAPI;
+    private final ATMBackendAPI ATMBackendAPI;
 
-    ReadCardAndPinDetailsState(ATM atm) {
+    public ReadCardAndPinDetailsState(ATM atm) {
         this.atm = atm;
-        this.backendAPI = new NodeBackendAPI();
+        this.ATMBackendAPI = new NodeATMBackendAPI();
     }
 
     @Override
     public boolean readCardDetailsAndPin(Card card, String pin) {
-        CardManagerService cardManagerService = CardManagerFactory.getCardManager(card.getType());
+        CardManagerService cardManagerService = CardManagerFactory.getCardManager(card.getNetworkType(), card.getCardType());
         boolean isCardValid = cardManagerService.validateCard(card, pin);
 
         if(isCardValid) {
-            this.atm.changeState(new ReadCashWithdrawalDetailsState(this.atm));
+            this.atm.changeState(StateFactory.getState(ATMState.READ_CASH_WITHDRAW_DETAILS, this.atm));
         } else {
-            this.atm.changeState(new EjectingCardState(this.atm));
+            this.atm.changeState(StateFactory.getState(ATMState.EJECTING_CARD, this.atm));
         }
 
         return isCardValid;
@@ -34,7 +35,7 @@ public class ReadCardAndPinDetailsState extends ATMStateMachine{
     @Override
     public boolean cancelTransaction(int transactionId) {
         try {
-            this.atm.changeState(new EjectingCardState(this.atm));
+            this.atm.changeState(StateFactory.getState(ATMState.EJECTING_CARD, this.atm));
             return true;
         } catch (Exception e) {
             throw new IllegalStateException("Cannot Eject Card");

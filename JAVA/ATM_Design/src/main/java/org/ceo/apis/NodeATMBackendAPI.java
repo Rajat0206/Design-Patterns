@@ -1,6 +1,6 @@
 package org.ceo.apis;
 
-public class NodeBackendAPI implements BackendAPI {
+public class NodeATMBackendAPI implements ATMBackendAPI {
     @Override
     public int createTransaction() {
         return (int) (Math.random() * 1000);

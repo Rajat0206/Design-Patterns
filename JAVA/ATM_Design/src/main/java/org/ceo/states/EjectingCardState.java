@@ -1,6 +1,7 @@
 package org.ceo.states;
 
 import org.ceo.enums.ATMState;
+import org.ceo.factories.StateFactory;
 import org.ceo.models.ATM;
 
 public class EjectingCardState extends ATMStateMachine{
@@ -13,7 +14,7 @@ public class EjectingCardState extends ATMStateMachine{
     @Override
     public void ejectCard() {
         System.out.println("Ejected Card Successfully");
-        this.atm.changeState(new ReadyForTransactionState(this.atm));
+        this.atm.changeState(StateFactory.getState(ATMState.READY_FOR_TRANSACTION, this.atm));
     }
 
     @Override

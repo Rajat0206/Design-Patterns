@@ -1,32 +1,37 @@
 package org.ceo.models;
 
+import org.ceo.enums.CardNetworkType;
 import org.ceo.enums.CardType;
 
 public class Card {
     private final long cardNumber;
-    private final String name;
     private final String pin;
+    private final String name;
+    private final CardType cardType;
     private final String bankName;
-    private final CardType type;
+    private final CardNetworkType networkType;
 
     @Override
     public String toString() {
         return "Card{" +
                 "cardNumber=" + cardNumber +
+                ", pin=" + pin +
                 ", name='" + name + '\'' +
-                ", pin='" + pin + '\'' +
+                ", cardType=" + cardType +
                 ", bankName='" + bankName + '\'' +
-                ", type=" + type +
+                ", networkType=" + networkType +
                 '}';
     }
 
-    public Card(long cardNumber, String name, String pin, String bankName, CardType type) {
+    public Card(long cardNumber, String pin, String name, CardType cardType, String bankName, CardNetworkType networkType) {
         this.cardNumber = cardNumber;
-        this.name = name;
         this.pin = pin;
+        this.name = name;
+        this.cardType = cardType;
         this.bankName = bankName;
-        this.type = type;
+        this.networkType = networkType;
     }
+
 
     public long getCardNumber() {
         return cardNumber;
@@ -44,7 +49,7 @@ public class Card {
         return bankName;
     }
 
-    public CardType getType() {
-        return type;
-    }
+    public CardType getCardType() { return cardType; }
+
+    public CardNetworkType getNetworkType() { return networkType; }
 }
