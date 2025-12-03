@@ -13,14 +13,22 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@Table(name = "groups")
+@Table(name = "user_groups")
 public class Group {
+
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
-    @OneToMany
+
+    @ManyToMany
     private List<User> users;
-    @OneToMany
+
+    @OneToMany(mappedBy = "group")
     private List<Expense> expenses;
+
+    @ElementCollection
+    @CollectionTable(name = "group_balances", joinColumns = @JoinColumn(name = "group_id"))
+    @MapKeyColumn(name = "user_id")
+    @Column(name = "balance")
     private Map<User, Double> balances;
 }

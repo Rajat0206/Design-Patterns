@@ -3,6 +3,8 @@ package com.LLD.Splitwise.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -12,8 +14,9 @@ import lombok.*;
 @Data
 @Table(name = "users")
 public class User {
+
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String email;

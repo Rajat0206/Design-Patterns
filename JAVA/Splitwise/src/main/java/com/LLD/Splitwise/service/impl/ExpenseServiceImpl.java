@@ -11,6 +11,7 @@ import com.LLD.Splitwise.repository.GroupRepository;
 import com.LLD.Splitwise.repository.UserRepository;
 import com.LLD.Splitwise.service.ExpenseService;
 import com.LLD.Splitwise.service.SplitExpenseStrategy;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
@@ -18,17 +19,12 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ExpenseServiceImpl implements ExpenseService {
 
     GroupRepository groupRepository;
     ExpenseRepository expenseRepository;
     UserRepository userRepository;
-
-    public ExpenseServiceImpl(ExpenseRepository expenseRepository, UserRepository userRepository, GroupRepository groupRepository) {
-        this.groupRepository = groupRepository;
-        this.expenseRepository = expenseRepository;
-        this.userRepository = userRepository;
-    }
 
     @Override
     public void addExpense(ExpenseRequestDto expense) {
@@ -60,6 +56,8 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     public List<ExpenseResponseDto> settleExpenses(Long groupId) {
         Group group = this.groupRepository.getReferenceById(groupId);
+
+        // can be implemented in expense settle strategy also
         Map<User, Double> balances = group.getBalances();
         List<ExpenseResponseDto> transactions = new ArrayList<>();
 
@@ -89,6 +87,7 @@ public class ExpenseServiceImpl implements ExpenseService {
             }
         }
 
+        this.groupRepository.save(group);
         return transactions;
     }
 

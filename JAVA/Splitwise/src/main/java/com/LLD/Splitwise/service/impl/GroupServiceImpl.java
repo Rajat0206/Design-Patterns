@@ -5,17 +5,14 @@ import com.LLD.Splitwise.entity.User;
 import com.LLD.Splitwise.repository.GroupRepository;
 import com.LLD.Splitwise.repository.UserRepository;
 import com.LLD.Splitwise.service.GroupService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class GroupServiceImpl implements GroupService {
     GroupRepository groupRepository;
     UserRepository userRepository;
-
-    GroupServiceImpl(GroupRepository groupRepository, UserRepository userRepository) {
-        this.groupRepository = groupRepository;
-        this.userRepository = userRepository;
-    }
 
     @Override
     public void addMemberToGroup(Long groupId, Long userId) {
