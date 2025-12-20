@@ -1,6 +1,6 @@
 package org.LLD.constants;
 
-public enum FinalizeAuctionStrategy {
+public enum FinalizeAuctionStrategyType {
     HIGHEST_UNIQUE_BIDDER,
     PREFERRED_BUYER
 }

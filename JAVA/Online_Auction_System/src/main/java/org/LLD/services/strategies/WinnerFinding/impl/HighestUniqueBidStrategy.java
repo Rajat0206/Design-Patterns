@@ -1,9 +1,7 @@
-package org.LLD.services.strategies.impl;
+package org.LLD.services.strategies.WinnerFinding.impl;
 
-import org.LLD.models.Auction;
 import org.LLD.models.Bid;
-import org.LLD.models.User;
-import org.LLD.services.strategies.FinalizeAuctionStrategy;
+import org.LLD.services.strategies.WinnerFinding.FinalizeAuctionStrategy;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class HighestUniqueBidStrategy implements FinalizeAuctionStrategy {
     @Override
-    public Optional<Long> findWinner(List<Bid> bids) {
+    public Optional<Long> findWinningBid(List<Bid> bids) {
         //Counting the frequency of each bid amount
         ConcurrentHashMap<Double, List<Bid>> maxBid = bids.stream()
                                                     .collect(

@@ -1,4 +1,4 @@
-package org.LLD.services.strategies;
+package org.LLD.services.strategies.ProfitOrLossCalculation;
 
 import org.LLD.models.Auction;
 

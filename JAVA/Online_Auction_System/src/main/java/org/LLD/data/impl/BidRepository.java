@@ -24,7 +24,11 @@ public class BidRepository implements IBidRepository {
 
     @Override
     public List<Bid> getBidsByAuctionId(Long auctionId) {
-        return bids.getOrDefault(auctionId, new java.util.ArrayList<>());
+        if(!bids.containsKey(auctionId)) {
+            bids.put(auctionId, new java.util.ArrayList<>());
+        }
+
+        return bids.get(auctionId);
     }
 
     @Override
@@ -35,7 +39,6 @@ public class BidRepository implements IBidRepository {
     @Override
     public void addBid(Bid bid) {
         Long autionId = bid.getAuction_id();
-        bids.putIfAbsent(autionId, new java.util.ArrayList<>());
         bids.get(autionId).add(bid);
     }
 

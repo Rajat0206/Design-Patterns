@@ -8,8 +8,8 @@ import org.LLD.models.Auction;
 import org.LLD.models.Bid;
 import org.LLD.models.User;
 import org.LLD.services.IAuctionSystemService;
-import org.LLD.services.strategies.FinalizeAuctionStrategy;
-import org.LLD.services.strategies.ProfitCalculationStrategy;
+import org.LLD.services.strategies.WinnerFinding.FinalizeAuctionStrategy;
+import org.LLD.services.strategies.ProfitOrLossCalculation.ProfitCalculationStrategy;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,14 +20,16 @@ public class AuctionSystemService implements IAuctionSystemService {
     private final ProfitCalculationStrategy profitCalculationStrategy;
     private final IAuctionSystem auctionSystemRepository;
     private final IBidRepository bidRepository;
-    private final IUserRepository userRepository;
+    private final IUserRepository buyerUserRepository;
+    private final IUserRepository sellerUserRepository;
 
-    public AuctionSystemService(FinalizeAuctionStrategy finalizeAuctionStrategy, IAuctionSystem auctionSystemRepository, IBidRepository bidRepository, IUserRepository userRepository, ProfitCalculationStrategy profitCalculationStrategy) {
+    public AuctionSystemService(FinalizeAuctionStrategy finalizeAuctionStrategy, IAuctionSystem auctionSystemRepository, IBidRepository bidRepository, IUserRepository buyerUserRepository, IUserRepository sellerUserRepository, ProfitCalculationStrategy profitCalculationStrategy) {
         this.profitCalculationStrategy = profitCalculationStrategy;
         this.finalizeAuctionStrategy = finalizeAuctionStrategy;
         this.auctionSystemRepository = auctionSystemRepository;
         this.bidRepository = bidRepository;
-        this.userRepository = userRepository;
+        this.buyerUserRepository = buyerUserRepository;
+        this.sellerUserRepository = sellerUserRepository;
     }
 
     @Override
@@ -45,18 +47,18 @@ public class AuctionSystemService implements IAuctionSystemService {
         }
 
         List<Bid> bids = bidRepository.getBidsByAuctionId(id);
-        Optional<Long> winningBidId = finalizeAuctionStrategy.findWinner(bids);
+        Optional<Long> winningBidId = finalizeAuctionStrategy.findWinningBid(bids);
 
+        auctionSystemRepository.updateAuctionStatus(id, AuctionStatus.COMPLETED);
         if(winningBidId.isPresent()) {
             Optional<Bid> bid = bidRepository.getBidById(winningBidId.get());
 
             // bidRepository.removeBidsByAuctionId(id);
-            auctionSystemRepository.updateAuctionStatus(id, AuctionStatus.COMPLETED);
             Long userId = bid.get().getBuyer_id();
 
             auctionSystemRepository.setWinner(id, userId);
             auctionSystemRepository.setWinningBidAmount(id, bid.get().getAmount());
-            return userRepository.getUserById(userId);
+            return buyerUserRepository.getUserById(userId);
         }
 
         return Optional.empty();
@@ -64,7 +66,7 @@ public class AuctionSystemService implements IAuctionSystemService {
 
     @Override
     public Double getProfitOrLoss (Long sellerId, Long auctionId) {
-        Optional<User> seller = userRepository.getUserById(sellerId);
+        Optional<User> seller = sellerUserRepository.getUserById(sellerId);
 
         if(seller.isEmpty()) {
             throw new RuntimeException("Seller not found");
@@ -75,6 +77,10 @@ public class AuctionSystemService implements IAuctionSystemService {
 
         if(auction.getSeller_id() != sellerId) {
             throw new IllegalStateException("Seller is not the owner of the auction");
+        }
+
+        if(auction.getStatus() != AuctionStatus.COMPLETED) {
+            throw new IllegalStateException("Auction is not completed yet");
         }
 
         return profitCalculationStrategy.calculateProfit(auction);
