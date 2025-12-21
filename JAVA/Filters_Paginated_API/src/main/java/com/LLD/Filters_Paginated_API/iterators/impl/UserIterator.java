@@ -3,31 +3,43 @@ package com.LLD.Filters_Paginated_API.iterators.impl;
 import com.LLD.Filters_Paginated_API.iterators.Iterator;
 import com.LLD.Filters_Paginated_API.models.User;
 import com.LLD.Filters_Paginated_API.repositories.UserRepository;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 // Cursor Based Pagination
+
+@Service
 public class UserIterator implements Iterator<List<User>> {
-    private int limit;
+    private final int limit;
     private int page;
     private List<User> currentBatch;
-    private int maxLimit;                           // max limit per page
+    private final int maxLimit = 5;                           // max limit per page
     private final UserRepository userRepository;
 
+    @Autowired
     public UserIterator(UserRepository userRepository) {
-        this.page = 0;
-        this.maxLimit = 20;
-        this.limit = this.maxLimit;                  // page size
         this.userRepository = userRepository;
+        this.page = 0;
+        this.limit = this.maxLimit;                  // page size
         this.currentBatch = userRepository.findAll(PageRequest.of(this.page, this.limit)).getContent();
     }
 
+//    public UserIterator(UserRepository userRepository) {
+//        this.page = 0;
+//        this.limit = this.maxLimit;                  // page size
+//        this.currentBatch = userRepository.findAll(PageRequest.of(this.page, this.limit)).getContent();
+//    }
+
     public UserIterator(UserRepository userRepository, int limit) {
-        this.page = 0;
-        this.maxLimit = 20;
-        this.limit = Math.min(limit, maxLimit);
         this.userRepository = userRepository;
+        this.page = 0;
+        this.limit = Math.min(limit, maxLimit);
         this.currentBatch = userRepository.findAll(PageRequest.of(this.page, this.limit)).getContent();
     }
 
@@ -71,5 +83,13 @@ public class UserIterator implements Iterator<List<User>> {
         this.currentBatch = userRepository.findAll(PageRequest.of(this.page, this.limit)).getContent();
 
         return result;
+    }
+
+    public Integer getCurrentPage() {
+        return this.page;
+    }
+
+    public Integer getLimit() {
+        return this.limit;
     }
 }
